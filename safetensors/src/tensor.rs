@@ -348,7 +348,7 @@ impl<'data> SafeTensors<'data> {
     /// Allow the user to iterate over tensors within the SafeTensors.
     /// The tensors returned are merely views and the data is not owned by this
     /// structure.
-    pub fn tensors(&self) -> Vec<(String, TensorView<'_>)> {
+    pub fn tensors(&self) -> Vec<(String, TensorView<'data>)> {
         let mut tensors = Vec::with_capacity(self.metadata.index_map.len());
         for (name, &index) in &self.metadata.index_map {
             let info = &self.metadata.tensors[index];
@@ -365,7 +365,7 @@ impl<'data> SafeTensors<'data> {
     /// Allow the user to get a specific tensor within the SafeTensors.
     /// The tensor returned is merely a view and the data is not owned by this
     /// structure.
-    pub fn tensor(&self, tensor_name: &str) -> Result<TensorView<'_>, SafeTensorError> {
+    pub fn tensor(&self, tensor_name: &str) -> Result<TensorView<'data>, SafeTensorError> {
         if let Some(index) = &self.metadata.index_map.get(tensor_name) {
             if let Some(info) = &self.metadata.tensors.get(**index) {
                 Ok(TensorView {
